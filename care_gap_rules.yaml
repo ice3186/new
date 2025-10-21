@@ -1,0 +1,210 @@
+# Care Gap Rules Configuration
+# Define custom rules for monitoring care gaps in your EMR
+
+rules:
+  # Lab Work Rules
+  - id: annual_cholesterol_screening
+    name: Annual Cholesterol Screening
+    type: lab_work
+    description: Annual lipid panel for cardiovascular health monitoring
+    enabled: true
+    conditions:
+      lab_test_code: "2093-3"  # LOINC code for Total Cholesterol
+      max_days_since_last: 365
+      applies_to_conditions:
+        - "hyperlipidemia"
+        - "coronary artery disease"
+    alert_priority: medium
+    alert_message: "Your annual cholesterol screening is due. Last test was over a year ago."
+
+  - id: diabetes_hba1c_monitoring
+    name: Diabetes HbA1c Monitoring
+    type: lab_work
+    description: Quarterly HbA1c testing for diabetes management
+    enabled: true
+    conditions:
+      lab_test_code: "4548-4"  # LOINC code for HbA1c
+      max_days_since_last: 90
+      applies_to_conditions:
+        - "diabetes mellitus"
+        - "type 2 diabetes"
+    alert_priority: high
+    alert_message: "Your HbA1c test is overdue. Please schedule this important diabetes monitoring test."
+
+  - id: annual_comprehensive_metabolic_panel
+    name: Annual Comprehensive Metabolic Panel
+    type: lab_work
+    description: Annual CMP for overall health assessment
+    enabled: true
+    conditions:
+      lab_test_code: "24323-8"  # LOINC code for CMP
+      max_days_since_last: 365
+    alert_priority: low
+    alert_message: "Your annual comprehensive metabolic panel is due."
+
+  - id: thyroid_function_test
+    name: Thyroid Function Test
+    type: lab_work
+    description: Annual TSH test for thyroid monitoring
+    enabled: true
+    conditions:
+      lab_test_code: "3016-3"  # LOINC code for TSH
+      max_days_since_last: 365
+      applies_to_conditions:
+        - "hypothyroidism"
+        - "hyperthyroidism"
+    alert_priority: medium
+    alert_message: "Your thyroid function test is due."
+
+  # Follow-up Appointment Rules
+  - id: chronic_disease_follow_up
+    name: Chronic Disease Follow-up
+    type: follow_up_appointment
+    description: Quarterly follow-up for chronic disease management
+    enabled: true
+    conditions:
+      appointment_type: "follow-up"
+      max_days_since_last: 90
+      applies_to_conditions:
+        - "hypertension"
+        - "diabetes mellitus"
+        - "coronary artery disease"
+        - "COPD"
+    alert_priority: high
+    alert_message: "Your chronic disease follow-up appointment is overdue. Please schedule a visit with your provider."
+
+  - id: annual_physical_exam
+    name: Annual Physical Examination
+    type: follow_up_appointment
+    description: Annual wellness visit and physical examination
+    enabled: true
+    conditions:
+      appointment_type: "physical"
+      max_days_since_last: 365
+    alert_priority: medium
+    alert_message: "Your annual physical examination is due. Schedule your wellness visit today."
+
+  - id: specialist_follow_up
+    name: Specialist Follow-up
+    type: follow_up_appointment
+    description: Follow-up appointment after specialist referral
+    enabled: true
+    conditions:
+      appointment_type: "specialist"
+      max_days_since_referral: 60
+    alert_priority: high
+    alert_message: "You have a pending specialist referral. Please schedule your appointment."
+
+  # Medication Management Rules
+  - id: medication_refill_needed
+    name: Medication Refill Reminder
+    type: medication_management
+    description: Alert when medication refills are needed
+    enabled: true
+    conditions:
+      days_supply_remaining: 7
+    alert_priority: high
+    alert_message: "Your medication supply is running low. Request a refill soon."
+
+  - id: medication_review
+    name: Annual Medication Review
+    type: medication_management
+    description: Annual comprehensive medication review
+    enabled: true
+    conditions:
+      max_days_since_last_review: 365
+    alert_priority: medium
+    alert_message: "It's time for your annual medication review with your provider."
+
+  # Preventive Care Rules
+  - id: flu_vaccine
+    name: Annual Flu Vaccine
+    type: immunization
+    description: Annual influenza vaccination
+    enabled: true
+    conditions:
+      vaccine_code: "141"  # CVX code for influenza vaccine
+      max_days_since_last: 365
+      seasonal_reminder: "09-01"  # September 1st
+    alert_priority: medium
+    alert_message: "Flu season is approaching. Schedule your annual flu vaccine."
+
+  - id: mammography_screening
+    name: Mammography Screening
+    type: preventive_screening
+    description: Biennial mammography for breast cancer screening
+    enabled: true
+    conditions:
+      screening_code: "77067"  # CPT code for screening mammography
+      max_days_since_last: 730  # 2 years
+      min_age: 40
+      gender: "female"
+    alert_priority: high
+    alert_message: "Your mammography screening is due. Early detection saves lives."
+
+  - id: colonoscopy_screening
+    name: Colonoscopy Screening
+    type: preventive_screening
+    description: Colonoscopy screening for colorectal cancer
+    enabled: true
+    conditions:
+      screening_code: "45378"  # CPT code for colonoscopy
+      max_days_since_last: 3650  # 10 years
+      min_age: 45
+    alert_priority: high
+    alert_message: "Your colonoscopy screening is due. This is an important cancer prevention test."
+
+  # Custom Tracking Rules
+  - id: blood_pressure_monitoring
+    name: Blood Pressure Monitoring
+    type: vital_monitoring
+    description: Regular blood pressure checks for hypertension management
+    enabled: true
+    conditions:
+      vital_type: "blood_pressure"
+      max_days_since_last: 30
+      applies_to_conditions:
+        - "hypertension"
+        - "prehypertension"
+    alert_priority: medium
+    alert_message: "Time to check your blood pressure. Regular monitoring is important for your health."
+
+  - id: weight_tracking
+    name: Weight Tracking
+    type: vital_monitoring
+    description: Regular weight monitoring
+    enabled: true
+    conditions:
+      vital_type: "weight"
+      max_days_since_last: 90
+      applies_to_conditions:
+        - "obesity"
+        - "diabetes mellitus"
+    alert_priority: low
+    alert_message: "Update your weight tracking. Regular monitoring helps manage your condition."
+
+# Alert Settings
+alert_settings:
+  # When to send alerts
+  quiet_hours_start: "22:00"
+  quiet_hours_end: "08:00"
+
+  # How often to repeat alerts
+  reminder_frequency_days:
+    high: 3
+    medium: 7
+    low: 14
+
+  # Alert methods (email, sms, push)
+  methods:
+    - email
+    # - sms
+    # - push
+
+# Monitoring Schedule
+monitoring:
+  # How often to check for care gaps (in hours)
+  check_interval: 24
+
+  # Time of day to run checks (24-hour format)
+  preferred_check_time: "09:00"
