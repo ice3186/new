@@ -3,6 +3,10 @@
 Status: product and architecture decision record
 Captured: 2026-09-01
 
+The staged implementation and release gates in `PRODUCT_REQUIREMENTS.md` are the
+current source of truth. In particular, the synthetic Patient Lens kernel comes
+before any helper-tab or live DOM work.
+
 ## Decision
 
 DPCSage should be a clinic intelligence layer, not merely a cross-system utility.
@@ -169,9 +173,10 @@ Do not use:
 - Broad access to unrelated browser origins.
 - Full-record replication merely because the browser can access it.
 
-## Immediate proof
+## First live proof after the synthetic kernel
 
-Build one read-only vertical slice before a general framework:
+After the offline Stage 1 contract passes, build one read-only live vertical
+slice before a general framework:
 
 1. Detect and verify a synthetic patient's identity in the active system.
 2. Resolve the confirmed identity in the other two systems.

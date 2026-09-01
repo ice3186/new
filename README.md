@@ -1,5 +1,12 @@
 # EMR Care Gap Monitoring System
 
+> **DPCSage direction:** This repository is being evolved into a cross-system
+> clinic intelligence layer for Hint, Elation, and Spruce. The Python application
+> below is the legacy Elation API prototype and is intentionally frozen while the
+> new browser-side foundation is developed. See
+> [`docs/PRODUCT_REQUIREMENTS.md`](docs/PRODUCT_REQUIREMENTS.md) and
+> [`extension/`](extension/) for the current product and implementation.
+
 An automated monitoring system for Elation Health EMR that detects care gaps and sends customizable alerts for lab work, follow-up appointments, preventive screenings, and other healthcare needs.
 
 ## Features
